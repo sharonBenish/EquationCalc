@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simultaneous Equation Calculator</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    
+    <div class="container">
+       
+        <div class="solver">
+            <h1>Simultaneous Equation Solver</h1>
+            <div class="hero"><img src="./images/45146bc40d1062a34b05349ea73fe101.webp" alt=""></div>
+
+            <form action="">
+                
+                <div class="eqn1"><p>Equation 1:</p><input type="number" name="a1" placeholder="a1"><b>x +</b> <input type="number" name="b1" placeholder="b1"><b>y = </b><input type="number" name="c1" placeholder="c1"> </div>
+                <div class="eqn2"><p>Equation 2:</p><input type="number" name="a2" placeholder="a2"><b>x +</b> <input type="number" name="b2" placeholder="b2"><b>y = </b><input type="number" name="c2" placeholder="c2"> </div>
+    
+                <button id="solve">Solve</button>
+                <button id="clear">Clear</button>
+    
+                <div class="result">
+                    <div id="x-ans">X = <span></span></div>
+                    <div id="y-ans">Y =  <span></span></div>
+                </div>
+            </form>
+        </div>
+    
+    </div>
+       
+    <script>
+
+        const solve = document.getElementById("solve");
+        const clear = document.getElementById("clear");
+
+        const xAns = document.getElementById("x-ans");
+        const yAns = document.getElementById("y-ans");
+
+        function calculate(){
+            //Solving Simultanous Linear Equations
+            var a1 = document.querySelector("input[name = 'a1']").value;
+            var a2 = document.querySelector("input[name = 'a2']").value;
+            var b1 = document.querySelector("input[name = 'b1']").value;
+            var b2 = document.querySelector("input[name = 'b2']").value;
+            var c1 = document.querySelector("input[name = 'c1']").value;
+            var c2 = document.querySelector("input[name = 'c2']").value;
+
+             //Elimination method
+        /*  1. Multiply a1,b1,c1 by a2
+            2. Multiply a2,b2,c2 by a1
+            3. if a1 & a2 > 0 then eq1 - eq2
+                else eq1 + q2
+            4. d = b1 +/- b2
+                e = c1 +/- c2
+                y = e/d
+            5. b1 = b1*y
+                x= (c1-b1)/a1
+        */
+
+
+            var [a3, b3, c3] = [(a2*a1), (a2*b1), (a2*c1)];
+            var [a4, b4, c4] = [(a1*a2), (a1*b2), (a1*c2)];
+
+            if (a3 > 0 && a4 > 0){
+            [b3, c3] = [(b3 - b4), (c3 - c4)]
+            } else(
+                [b3, c3] =[(b3 + b4), (c3 + c4)]
+            )
+
+            var y = c3/b3;
+            b1 = b1 * y;
+            var x = (c1 - b1)/a1;
+
+            xAns.firstElementChild.textContent=x.toFixed(3);
+            yAns.firstElementChild.textContent=y.toFixed(3);
+        }
+
+        
+
+        solve.addEventListener("click", (e)=>{
+            e.preventDefault();
+            calculate();
+        })
+
+        clear.addEventListener("click", (e)=>{
+            e.preventDefault();
+            document.querySelector("input[name = 'a1']").value = "";
+            document.querySelector("input[name = 'a2']").value = "";
+            document.querySelector("input[name = 'b1']").value = "";
+            document.querySelector("input[name = 'b2']").value = "";
+            document.querySelector("input[name = 'c1']").value = "";
+            document.querySelector("input[name = 'c2']").value = "";
+
+            xAns.firstElementChild.textContent="";
+            yAns.firstElementChild.textContent="";
+
+        })
+    </script>
+</body>
+</html>
